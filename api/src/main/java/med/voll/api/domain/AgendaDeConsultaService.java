@@ -1,12 +1,10 @@
 package med.voll.api.domain;
 
 import med.voll.api.domain.consulta.Consulta;
-import med.voll.api.domain.consulta.ConsultaRepository;
 import med.voll.api.domain.consulta.DatosAgendarConsulta;
 import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
-import med.voll.api.domain.paciente.Paciente;
-import med.voll.api.domain.paciente.PacienteRepository;
+import med.voll.api.domain.paciente.ConsultaRepository;
 import med.voll.api.infra.errores.ValiadacionDeIntegridad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +13,11 @@ import org.springframework.stereotype.Service;
 public class AgendaDeConsultaService {
 
     @Autowired
-    private PacienteRepository pacienteRepository;
+    private ConsultaRepository pacienteRepository;
     @Autowired
     private MedicoRepository medicoRepository;
     @Autowired
-    private ConsultaRepository consultaRepository;
+    private med.voll.api.domain.consulta.ConsultaRepository consultaRepository;
 
     public void agendar(DatosAgendarConsulta datos) {
 
