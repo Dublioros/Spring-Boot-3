@@ -5,7 +5,7 @@ import med.voll.api.domain.consulta.DatosAgendarConsulta;
 import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.ConsultaRepository;
-import med.voll.api.infra.errores.ValiadacionDeIntegridad;
+import med.voll.api.infra.errores.ValidacionDeIntegridad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +22,11 @@ public class AgendaDeConsultaService {
     public void agendar(DatosAgendarConsulta datos) {
 
         if (pacienteRepository.findById(datos.idPaciente()).isPresent()) {
-            throw new ValiadacionDeIntegridad("Id de Paciente no encontrado");
+            throw new ValidacionDeIntegridad("Id de Paciente no encontrado");
         }
 
         if (datos.idMedico() != null && medicoRepository.existsById(datos.idMedico())) {
-            throw new ValiadacionDeIntegridad("Id de Medico no encontrado");
+            throw new ValidacionDeIntegridad("Id de Medico no encontrado");
         }
 
         var paciente = pacienteRepository.findById(datos.idPaciente()).get();
@@ -41,7 +41,7 @@ public class AgendaDeConsultaService {
             return medicoRepository.getReferenceById(datos.idMedico());
         }
         if (datos.especialidad() == null) {
-            throw new ValiadacionDeIntegridad("Debe seleccionar una especialidad");
+            throw new ValidacionDeIntegridad("Debe seleccionar una especialidad");
         }
         return medicoRepository.seleccionarMedicoConEspecialidadEnFecha(datos.especialidad(), datos.fecha());
     }

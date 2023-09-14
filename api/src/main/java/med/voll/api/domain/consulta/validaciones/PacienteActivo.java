@@ -2,18 +2,23 @@ package med.voll.api.domain.consulta.validaciones;
 
 import jakarta.validation.ValidationException;
 import med.voll.api.domain.consulta.DatosAgendarConsulta;
-import med.voll.api.domain.paciente.ConsultaRepository;
+import med.voll.api.domain.paciente.PacienteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class PacienteActivo {
+@Component
+public class PacienteActivo implements ValidadorDeConsultas{
+    @Autowired
+    private PacienteRepository repository;
 
-    private ConsultaRepository repository;
-    public void validar(DatosAgendarConsulta datos) {
-        if(datos.idPaciente() == null) {
+    public void validar(DatosAgendarConsulta datos){
+        if(datos.idPaciente()==null){
             return;
         }
+        var pacienteActivo=repository.findActivoById(datos.idPaciente());
 
-        var pacienteActivo = (boolean) repository.findByActivoById(datos.idPaciente());
-        if (!pacienteActivo)
-            throw new ValidationException("No se puede agendar citas a pacientes inactivos");
+        if(!pacienteActivo){
+            throw new ValidationException("No se puede permitir agendar citas con pacientes inactivos en el sistema");
+        }
     }
 }
